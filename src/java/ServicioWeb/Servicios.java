@@ -49,10 +49,10 @@ public class Servicios {
      * Web service operation
      */
     @WebMethod(operationName = "AgregarReserva")
-    @Oneway
-    public void AgregarReserva(@WebParam(name = "id") int id, @WebParam(name = "inicio") Date inicio, @WebParam(name = "termino") Date termino) {
-        rdao.reservar(id, inicio, termino);
+    public String AgregarReserva(@WebParam(name = "id") int id, @WebParam(name = "inicio") String inicio, @WebParam(name = "termino") String termino) {
         
+       String add = rdao.reservar(id, inicio, termino);
+       return add;
     }
     
     
