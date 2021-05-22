@@ -11,6 +11,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,41 +33,6 @@ public class ReservaDAO {
     OracleCallableStatement cst;
     int res;
     String msj;
-
-    public List listar() {
-        List<Reserva> lista = new ArrayList<>();
-        try {
-            con = c.conectar();
-            cst = (OracleCallableStatement) con.prepareCall("{call LISTARRESERVA(?)}");
-            cst.registerOutParameter(1, OracleTypes.CURSOR);
-
-            cst.execute();
-            ors = (OracleResultSet) cst.getObject(1);
-            while (ors.next()) {
-                Reserva r = new Reserva();
-                r.setID(ors.getInt(1));
-                r.setfInicio(ors.getDate(2));
-                r.setfTermino(ors.getDate(3));
-
-                String es;
-                es = ors.getString(4);
-                char estado = es.charAt(0);
-                r.setEstado(estado);
-                r.setClienteid(ors.getInt(5));
-
-                String ac;
-                ac = ors.getString(6);
-                char activo = ac.charAt(0);
-                r.setActivo(activo);
-
-                lista.add(r);
-            }
-        } catch (Exception e) {
-
-        }
-        return lista;
-
-    }
 
     public List listaReservas() {
 
@@ -102,25 +68,38 @@ public class ReservaDAO {
         return datos;
     }
 
-    public void reservar(int id, Date inicio, Date termino) {
+    public String reservar(int id, String inicio, String termino, int cliente) {
 
-        //String sql = "INSERT INTO SIGLOXXI.RESERVA (ID_RESERVA, FHORA_LLEGADA, FHORA_SALIDA, ESTADO_RESERVA, CLIENTE_ID_CLIENTE, ACTIVO) VALUES (" + "'" + id + "'" + ", " + "'" + inicio + "'" + ", " + "'" + termino + "'" + ", " + "'" + "D" + "'" + ", " + "'" + idCliente + "'" + ", " + "'" + "1" + "'" + ")";
+        /*SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+       String ini = formato.format(inicio);*/
+        int res;
+        String msj = "";
         try {
             con = c.conectar();
-            // ps = con.prepareStatement(sql);
 
             CallableStatement cmd = con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?,?)}");
 
             cmd.setInt(1, id);
-            cmd.setDate(2, (java.sql.Date) inicio);
-            cmd.setDate(3, (java.sql.Date) termino);
+            cmd.setDate(2, java.sql.Date.valueOf(inicio));
+            cmd.setDate(3, java.sql.Date.valueOf(termino));
             cmd.setString(4, "D");
-            cmd.setString(5, "1");
+            cmd.setInt(5, cliente);
             cmd.setString(6, "1");
-            cmd.executeQuery();
-        } catch (Exception e) {
-        }
+            //el metodo ve la cantides de filas que fueron afectadas
+            res = cmd.executeUpdate();
 
+            if (res == 1) {
+
+                msj = "La reserva se realizo correctamente";
+
+            } else {
+                msj = "Error no se pudo agregar";
+            }
+
+        } catch (SQLException e) {
+            System.out.print("loloololo " + inicio + e);
+        }
+        return msj;
     }
 
 }
