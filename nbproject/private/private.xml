@@ -5,6 +5,9 @@
         <group>
             <file>file:/C:/Users/dsaez/Documents/NetBeansProjects/RestaurantePortafolio/Restaurante/ServicioWeb/src/java/DAO/ReservaDAO.java</file>
             <file>file:/C:/Users/dsaez/Documents/NetBeansProjects/RestaurantePortafolio/Restaurante/ServicioWeb/src/java/ServicioWeb/WSServicios.java</file>
+            <file>file:/C:/Users/dsaez/Documents/NetBeansProjects/RestaurantePortafolio/Restaurante/ServicioWeb/src/java/DAO/Mesa_ReservaDAO.java</file>
+            <file>file:/C:/Users/dsaez/Documents/NetBeansProjects/RestaurantePortafolio/Restaurante/ServicioWeb/src/java/Modelo/Mesa_Reserva.java</file>
+            <file>file:/C:/Users/dsaez/Documents/NetBeansProjects/RestaurantePortafolio/Restaurante/ServicioWeb/src/java/Modelo/Reserva.java</file>
         </group>
     </open-files>
 </project-private>

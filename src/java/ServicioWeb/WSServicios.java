@@ -6,6 +6,7 @@
 package ServicioWeb;
 
 import DAO.MesaDAO;
+import DAO.Mesa_ReservaDAO;
 import DAO.ReservaDAO;
 import Modelo.Mesa;
 import Modelo.Reserva;
@@ -23,6 +24,7 @@ public class WSServicios {
 
     MesaDAO mdao = new MesaDAO();
     ReservaDAO rdao = new ReservaDAO();
+    Mesa_ReservaDAO mrdao = new Mesa_ReservaDAO();
 
     /**
      * Web service operation
@@ -46,8 +48,17 @@ public class WSServicios {
      * Web service operation
      */
     @WebMethod(operationName = "AgregarReserva")
-    public String AgregarReserva(@WebParam(name = "id") int id, @WebParam(name = "inicio") String inicio, @WebParam(name = "termino") String termino,@WebParam(name = "idCliente") int idCliente) {
-        String add = rdao.reservar(id, inicio, termino,idCliente);
+    public String AgregarReserva( @WebParam(name = "inicio") String inicio, @WebParam(name = "termino") String termino,@WebParam(name = "idCliente") int idCliente) {
+        String add = rdao.reservar( inicio, termino,idCliente);
         return add;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "asignarMesa")
+    public String asignarMesa(@WebParam(name = "idMesa") int idMesa, @WebParam(name = "idReserva") int idReserva) {
+        String datos = mrdao.asignarMesa(idMesa, idReserva);
+        return datos;
     }
 }

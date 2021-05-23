@@ -25,6 +25,7 @@ import oracle.jdbc.internal.OracleTypes;
  */
 public class ReservaDAO {
 
+    Mesa_ReservaDAO mrdao = new Mesa_ReservaDAO();
     PreparedStatement ps;
     OracleResultSet ors;
     ResultSet rs;
@@ -68,26 +69,30 @@ public class ReservaDAO {
         return datos;
     }
 
-    public String reservar(int id, String inicio, String termino, int cliente) {
+    public String reservar(String inicio, String termino, int cliente) {
 
-        /*SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-       String ini = formato.format(inicio);*/
+        //int idReserva;
         int res;
         String msj = "";
         try {
             con = c.conectar();
+            //String sql = "{call AGREGARRESERVA(?,?,?,?,?)}";
+            CallableStatement cmd = con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?)}");
 
-            CallableStatement cmd = con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?,?)}");
-
-            cmd.setInt(1, id);
-            cmd.setDate(2, java.sql.Date.valueOf(inicio));
-            cmd.setDate(3, java.sql.Date.valueOf(termino));
-            cmd.setString(4, "D");
-            cmd.setInt(5, cliente);
-            cmd.setString(6, "1");
+            cmd.setDate(1, java.sql.Date.valueOf(inicio));
+            cmd.setDate(2, java.sql.Date.valueOf(termino));
+            cmd.setString(3, "D");
+            cmd.setInt(4, cliente);
+            cmd.setString(5, "1");
             //el metodo ve la cantides de filas que fueron afectadas
             res = cmd.executeUpdate();
+            /*ResultSet este = cmd.getGeneratedKeys();
+            if (este.next()) {
+                // aquí está el id generado para esta reserva
+                idReserva = este.getInt(1);
+                mrdao.asignarMesa(idMesa, idReserva);
 
+            }*/
             if (res == 1) {
 
                 msj = "La reserva se realizo correctamente";
@@ -97,7 +102,7 @@ public class ReservaDAO {
             }
 
         } catch (SQLException e) {
-            System.out.print("loloololo " + inicio + e);
+            System.out.print("lol " + inicio + e);
         }
         return msj;
     }
