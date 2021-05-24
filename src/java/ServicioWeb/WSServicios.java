@@ -44,14 +44,6 @@ public class WSServicios {
         return info;
     }
 
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "AgregarReserva")
-    public String AgregarReserva( @WebParam(name = "inicio") String inicio, @WebParam(name = "termino") String termino,@WebParam(name = "idCliente") int idCliente) {
-        String add = rdao.reservar( inicio, termino,idCliente);
-        return add;
-    }
 
     /**
      * Web service operation
@@ -60,5 +52,23 @@ public class WSServicios {
     public String asignarMesa(@WebParam(name = "idMesa") int idMesa, @WebParam(name = "idReserva") int idReserva) {
         String datos = mrdao.asignarMesa(idMesa, idReserva);
         return datos;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "obtenerIDReserva")
+    public int obtenerIDReserva() {
+        int resultado = rdao.obtenerIDReserva();
+        return resultado;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "agregarReserva")
+    public String agregarReserva(@WebParam(name = "inicio") String inicio, @WebParam(name = "termino") String termino, @WebParam(name = "cliente") int cliente) {
+        String resultado = rdao.reservar(inicio, termino, cliente);
+        return resultado;
     }
 }

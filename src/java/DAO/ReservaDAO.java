@@ -71,28 +71,21 @@ public class ReservaDAO {
 
     public String reservar(String inicio, String termino, int cliente) {
 
-        //int idReserva;
         int res;
         String msj = "";
         try {
             con = c.conectar();
-            //String sql = "{call AGREGARRESERVA(?,?,?,?,?)}";
-            CallableStatement cmd = con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?)}");
 
-            cmd.setDate(1, java.sql.Date.valueOf(inicio));
-            cmd.setDate(2, java.sql.Date.valueOf(termino));
-            cmd.setString(3, "D");
-            cmd.setInt(4, cliente);
-            cmd.setString(5, "1");
+            cst= (OracleCallableStatement) con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?)}");
+
+            cst.setDate(1, java.sql.Date.valueOf(inicio));
+            cst.setDate(2, java.sql.Date.valueOf(termino));
+            cst.setString(3, "D");
+            cst.setInt(4, cliente);
+            cst.setString(5, "1");
             //el metodo ve la cantides de filas que fueron afectadas
-            res = cmd.executeUpdate();
-            /*ResultSet este = cmd.getGeneratedKeys();
-            if (este.next()) {
-                // aquí está el id generado para esta reserva
-                idReserva = este.getInt(1);
-                mrdao.asignarMesa(idMesa, idReserva);
+            res = cst.executeUpdate();
 
-            }*/
             if (res == 1) {
 
                 msj = "La reserva se realizo correctamente";
@@ -102,9 +95,25 @@ public class ReservaDAO {
             }
 
         } catch (SQLException e) {
-            System.out.print("lol " + inicio + e);
+            System.out.print("loloololo " + inicio + e);
         }
         return msj;
     }
 
+    public int obtenerIDReserva() {
+        int resultado = 0;
+        String sql = "SELECT max(id_reserva) FROM RESERVA";
+        try {
+            con = c.conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                resultado = rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+        }
+
+        return resultado;
+    }
 }
