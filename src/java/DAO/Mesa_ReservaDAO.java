@@ -28,21 +28,20 @@ public class Mesa_ReservaDAO {
     OracleCallableStatement cst;
     int res;
     String msj;
-    
-     public String asignarMesa(int idMesa, int idReserva) {
 
-         String sql ="insert into mesa_reserva(mesa_id_mesa, reserva_id_reserva) values(?,?)";
-         
+    public String asignarMesa(int idMesa, int idReserva) {
+
+        String sql = "insert into mesa_reserva(mesa_id_mesa, reserva_id_reserva) values(?,?)";
+
         int res;
         String msj = "";
         try {
             con = c.conectar();
-            ps=con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, idMesa);
             ps.setInt(2, idReserva);
             //el metodo ve la cantides de filas que fueron afectadas
-            res=ps.executeUpdate();
-
+            res = ps.executeUpdate();
             if (res == 1) {
 
                 msj = "La reserva se realizo correctamente";

@@ -34,6 +34,7 @@ public class ReservaDAO {
     OracleCallableStatement cst;
     int res;
     String msj;
+    Reserva r = new Reserva();
 
     public List listaReservas() {
 
@@ -76,7 +77,7 @@ public class ReservaDAO {
         try {
             con = c.conectar();
 
-            cst= (OracleCallableStatement) con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?)}");
+            cst = (OracleCallableStatement) con.prepareCall("{call AGREGARRESERVA(?,?,?,?,?)}");
 
             cst.setDate(1, java.sql.Date.valueOf(inicio));
             cst.setDate(2, java.sql.Date.valueOf(termino));
@@ -115,5 +116,49 @@ public class ReservaDAO {
         }
 
         return resultado;
+    }
+
+    public Reserva listarID(int id) {
+        String sql = "select * from reserva where id_reserva=" + id;
+
+        try {
+            con = c.conectar();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                r.setID(rs.getInt(1));
+                r.setfInicio(rs.getDate(2));
+                r.setfTermino(rs.getDate(3));
+
+                String es;
+                es = rs.getString(4);
+                char estado = es.charAt(0);
+                r.setEstado(estado);
+                r.setClienteid(rs.getInt(5));
+
+                String ac;
+                ac = rs.getString(6);
+                char activo = ac.charAt(0);
+                r.setActivo(activo);
+
+            }
+
+        } catch (Exception e) {
+        }
+        return r;
+    }
+
+    public Reserva cancelarReserva(int id) {
+        String sql = "delete from reserva where id=" + id;
+
+        try {
+            con = c.conectar();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+        }
+        return r;
     }
 }
