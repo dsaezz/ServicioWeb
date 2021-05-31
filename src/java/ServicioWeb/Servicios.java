@@ -5,16 +5,20 @@
  */
 package ServicioWeb;
 
+import DAO.BoletaDAO;
 import DAO.MesaDAO;
 import DAO.ReservaDAO;
 import Modelo.Mesa;
 import Modelo.Reserva;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.jws.Oneway;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,7 +28,7 @@ import javax.jws.WebParam;
 public class Servicios {
     MesaDAO mdao = new MesaDAO();
     ReservaDAO rdao = new ReservaDAO();
-    
+    BoletaDAO bdao = new BoletaDAO();
     
     
      @WebMethod(operationName = "ListaMesaWS")
@@ -54,8 +58,19 @@ public class Servicios {
        String add = rdao.reservar(id, inicio, termino);
        return add;
     }
+    @WebMethod(operationName = "AgregarBoleta")
+    public String AgregarBoleta(@WebParam(name = "Total") int total, @WebParam(name = "MontoPagado") int Monto, @WebParam(name = "Fecha") String fecha,
+            @WebParam(name = "IdPedido") int idpedido, @WebParam(name = "IdMesa") int idmesa) {
+        
+        String addboleta = bdao.addBoleta(total, Monto, fecha, idmesa, idpedido, idmesa);
+        return addboleta;
+    }
     
-    
+    @WebMethod(operationName = "ListDetalle")
+    public List ListDetalle(){
+   
+        return bdao.ListBoleta();
+    }
     
     
 }
