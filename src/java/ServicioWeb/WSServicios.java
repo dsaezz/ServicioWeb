@@ -71,4 +71,13 @@ public class WSServicios {
         String resultado = rdao.reservar(inicio, termino, cliente);
         return resultado;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "MesaId")
+    public Mesa MesaId(@WebParam(name = "id") int id) {
+        Mesa mesa = mdao.MesaId(id);
+        return mesa;
+    }
 }
